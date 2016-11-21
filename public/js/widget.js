@@ -11,8 +11,23 @@ var app = {
   subcategories: null,
 }
 
+function submitFilter() {
+  // Format URL
+  var qs = "?"
+  $('.checkbox :checked').each(function(){
+    qs += $(this).attr('category') + '=' + $(this).attr('value') + "&"
+  })
+
+  $.getJSON(app.api.widgets.concat(qs), {}, function(data, textStatus, jqXHR){
+    app.widgets = data || []
+  }).then(function(){
+    updateWidgets()
+  })
+}
+
 /* Updates the filter side bar with type and property options */
 function updateFilterSidebar() {
+  $('#filters').empty()
 
   // Types
   $('#filters').append('<br><label>TYPE</label>')
@@ -20,7 +35,10 @@ function updateFilterSidebar() {
     $('#filters').append('\
       <div class="checkbox">\
         <label>\
-          <input value="' + cat.p_name + '" type="checkbox">' + cat.p_name +
+          <input type="checkbox" value="' +
+          cat.p_name + '" category="' +
+          cat.p_category + '">' +
+          cat.p_name +
         '</label>\
       </div>\
     ')
@@ -35,7 +53,10 @@ function updateFilterSidebar() {
       $('#filters').append('\
         <div class="checkbox">\
           <label>\
-            <input value="' + prop.p_name + '" type="checkbox">' + prop.p_name +
+            <input type="checkbox" value="' +
+            prop.p_name + '" category="' +
+            prop.p_category + '">' +
+            prop.p_name +
           '</label>\
         </div>\
       ')
@@ -59,8 +80,12 @@ function getWidgetHTML(widget) {
       <ul>\
   '
 
-  Object.keys(widget.properties).forEach(function(key){
-    ret += '<li>' + key + ': ' + widget.properties[key] + '</li>'
+  ret += '<li>type: ' + widget['type'].toString() + '</li>'
+
+  _.uniq(_.map(app.subcategories, 'p_category')).forEach(function(key){
+    if (_.has(widget, key)) {
+      ret += '<li>' + key + ': ' + widget[key].toString() + '</li>'
+    }
   })
 
   return ret + '</ul></div>'
@@ -70,6 +95,7 @@ function getWidgetHTML(widget) {
 function updateHome() {
   var count = 0;
   $('.widget-holder').each(function(){
+    $(this).empty()
     var widget = app.widgets[count]
     $(this).append(getWidgetHTML(widget))
     count += 1
@@ -78,6 +104,8 @@ function updateHome() {
 
 /* Widgets - Browse all widgets */
 function updateWidgets() {
+  $('#widget-list').empty()
+
   app.widgets.forEach(function(widget){
     $('#widget-list').append('\
       <div class="col-lg-3 col-md-4">' + getWidgetHTML(widget) + '</div>'
