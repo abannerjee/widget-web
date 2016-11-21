@@ -4,14 +4,14 @@
     <title>Widget Factory</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.2/lodash.min.js"></script>
     <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="public/css/widget.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="public/js/widget.js"></script>
   </head><body>
-    <div class="navbar navbar-default navbar-static-top">
+    <div class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-ex-collapse">
@@ -39,7 +39,7 @@
             <li>
               <a href="#" data-toggle="modal" data-target="#cart-modal">
                 <i class="fa fa-lg fa-fw ars fa-shopping-cart"></i>
-                <span class="badge">0</span>
+                <span id="cart-badge" class="badge">0</span>
               </a>
             </li>
           </ul>
@@ -126,27 +126,11 @@
             <h4 class="modal-title">Cart</h4>
           </div>
           <div class="modal-body">
-            <ul class="list-group">
-              <li class="list-group-item">Cras justo odio
-                <button type="button" class="close" aria-hidden="true">×</button>
-              </li>
-              <li class="list-group-item">Dapibus ac facilisis in
-                <button type="button" class="close" aria-hidden="true">×</button>
-              </li>
-              <li class="list-group-item">Morbi leo risus
-                <button type="button" class="close" aria-hidden="true">×</button>
-              </li>
-              <li class="list-group-item">Porta ac consectetur ac
-                <button type="button" class="close" aria-hidden="true">×</button>
-              </li>
-              <li class="list-group-item">Vestibulum at eros
-                <button type="button" class="close" aria-hidden="true">×</button>
-              </li>
-            </ul>
+            <ul id="cart-list" class="list-group"></ul>
             <div class="panel panel-primary">
               <div class="panel-heading">
-                <h3 class="panel-title">Total
-                  <span style="float: right; padding-right: 30px">5</span>
+                <h3 id="cart-total" class="panel-title">Total
+                  <span style="float: right; padding-right: 30px"></span>
                 </h3>
               </div>
             </div>

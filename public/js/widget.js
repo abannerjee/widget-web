@@ -1,6 +1,7 @@
 //var api = 'http://34.192.230.162:3000'
 var api = 'http://localhost:3000'
 var app = {
+  name: 'widgetfactory',
   api: {
     widgets: api.concat('/widgets'),
     categories: api.concat('/categories'),
@@ -9,10 +10,72 @@ var app = {
   widgets: null,
   categories: null,
   subcategories: null,
+  cart: [],
+  cookie: null,
 }
 
+/*
+ * Functions used to add widgets to the cart
+ * and initialize the cart using cookies
+ */
+function initCart() {
+  // Check for existing cookie
+  var exists = document.cookie.match(new RegExp(app.name + '=([^;]+)')); 
+  if (!exists) {
+    updateCookie()
+  }
+  else {
+    var arr = JSON.parse(exists[1])
+    arr.forEach(function(id){
+      addToCart(id)
+    })
+  }
+}
+
+function updateCookie() {
+  var cookie = "".concat(app.name, '=', JSON.stringify(app.cart))
+  document.cookie = cookie
+}
+
+// Multiples of the same widget cannot be added to the cart
+function addToCart(id) {
+  if (_.intersection(app.cart, [id]) == 0) {
+    name = _.find(app.widgets, {w_id: id}).w_name
+    app.cart.push(id)
+
+    // Add to cart modal
+    $('#cart-list').append('\
+      <li wid="' + id + '" class="list-group-item">' + name +
+        '<button type="button" class="close" aria-hidden="true" \
+          onclick=removeFromCart(' + id + ')>x\
+        </button>\
+      </li>\
+    ')
+
+    // Update cart total
+    $('#cart-total span').text(app.cart.length)
+    $('#cart-badge').text(app.cart.length)
+    updateCookie()
+  }
+}
+
+function removeFromCart(id) {
+  // Remove from cart modal and header
+  _.pull(app.cart, id)
+  $('.list-group-item[wid="' + id + '"]').detach()
+
+  // Update cart total
+  $('#cart-total span').text(app.cart.length)
+  $('#cart-badge').text(app.cart.length)
+  updateCookie()
+}
+
+
+/*
+ * Functions used to filter/retrieve widget info
+ */
 function submitFilter() {
-  // Format URL
+  // Format query string
   var qs = "?"
   $('.checkbox :checked').each(function(){
     qs += $(this).attr('category') + '=' + $(this).attr('value') + "&"
@@ -25,7 +88,7 @@ function submitFilter() {
   })
 }
 
-/* Updates the filter side bar with type and property options */
+// Updates the filter side bar with type and property options
 function updateFilterSidebar() {
   $('#filters').empty()
 
@@ -64,16 +127,17 @@ function updateFilterSidebar() {
   })
 }
 
-/* Returns HTML template for a widget */
+// Returns HTML template for a widget
 function getWidgetHTML(widget) {
   var ret = '\
     <img src="http://pingendo.github.io/pingendo-bootstrap/assets/placeholder.png" class="img-responsive">\
     <div style="padding:0" class="col-xs-12">\
-      <div style="padding:0" class="col-xs-8">\
+      <div style="padding:0" class="col-xs-9">\
         <h4 style="margin:10px 0">' + widget.w_name + '<h4>\
       </div>\
-      <div class="col-xs-4">\
-        <a style="margin: 10px 0" class="btn btn-primary btn-xs">Add to Cart</a>\
+      <div class="col-xs-3">\
+        <a style="margin: 10px 0" wid="' + widget.w_id +
+        '" onclick=addToCart(' + widget.w_id + ') class="btn btn-primary btn-xs">Buy</a>\
       </div>\
     </div>\
     <div style="padding:0" class="col-xs-12"\
@@ -91,7 +155,7 @@ function getWidgetHTML(widget) {
   return ret + '</ul></div>'
 }
 
-/* Home - Featured Widgets */
+// Home - Featured Widgets
 function updateHome() {
   var count = 0;
   $('.widget-holder').each(function(){
@@ -102,7 +166,7 @@ function updateHome() {
   })
 }
 
-/* Widgets - Browse all widgets */
+// Widgets - Browse all widgets
 function updateWidgets() {
   $('#widget-list').empty()
 
@@ -114,7 +178,10 @@ function updateWidgets() {
 }
 
 
-/* Retrieves widget data from the API Server */
+/*
+ * Main functions to get all necessary widget data
+ * and update the widget pages
+ */
 function getData() {
   $.when(
     $.getJSON(app.api.widgets, {}, function(data, textStatus, jqXHR){
@@ -128,6 +195,7 @@ function getData() {
     })
   ).then(function(){
     update()
+    initCart()
   })
 }
 
