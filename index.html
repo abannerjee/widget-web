@@ -1,0 +1,185 @@
+<html><head>
+    <meta name="keywords" content="widget">
+    <meta name="description" content="Online store for widgets">
+    <title>Widget Factory</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="public/css/widget.css" rel="stylesheet" type="text/css">
+  </head><body>
+    <div class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-ex-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#"><span>Widget Factory</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-ex-collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a href="public/views/widgets.html">Widgets</a>
+            </li>
+            <li>
+              <a href="public/views/inventory.html">Inventory</a>
+            </li>
+            <li>
+              <a href="public/views/order.html">Check Order</a>
+            </li>
+            <li>
+              <a href="#">Admin Tools</a>
+            </li>
+            <li>
+              <a href="#" data-toggle="modal" data-target="#cart-modal">
+                <i class="fa fa-lg fa-fw ars fa-shopping-cart"></i>
+                <span class="badge">0</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="section section-primary">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12 padding hero text-center">
+            <h1 class="hero-header">Widget Factory</h1>
+            <i class="fa fa-4x fa-fw fa-gears hero-icon"></i>
+            <p class="hero-subtext">Changing the world one widget at a time</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <h1 class="text-center">Featured Widgets</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4">
+            <img src="http://pingendo.github.io/pingendo-bootstrap/assets/placeholder.png" class="img-responsive">
+            <h3>Widget Name
+              <span>
+                <a style="float:right" class="btn btn-primary btn-sm">Add to Cart</a>
+              </span>
+            </h3>
+            <p>Widget description</p>
+          </div>
+          <div class="col-md-4">
+            <img src="http://pingendo.github.io/pingendo-bootstrap/assets/placeholder.png" class="img-responsive">
+            <h3>Widget Name
+              <span>
+                <a style="float:right" class="btn btn-primary btn-sm">Add to Cart</a>
+              </span>
+            </h3>
+            <p>Widget description</p>
+          </div>
+          <div class="col-md-4">
+            <img src="http://pingendo.github.io/pingendo-bootstrap/assets/placeholder.png" class="img-responsive">
+            <h3>Widget Name
+              <span>
+                <a style="float:right" class="btn btn-primary btn-sm">Add to Cart</a>
+              </span>
+            </h3>
+            <p>Widget description</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <a class="btn btn-lg btn-primary color-orange">Browse All Widgets</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="section section-primary">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-6">
+            <h1>Widget Factory</h1>
+            <p class="color-gray">Lorem ipsum dolor sit amet, consectetur adipisici elit,
+              <br>sed eiusmod tempor incidunt ut labore et dolore magna aliqua.
+              <br>Ut enim ad minim veniam, quis nostrud</p>
+          </div>
+          <div class="col-sm-6">
+            <p class="text-info text-right">
+              <br>
+              <br>
+            </p>
+            <div class="row">
+              <div class="col-md-12 hidden-lg hidden-md hidden-sm text-left">
+                <a href="#"><i class="fa fa-3x fa-fw fa-instagram text-inverse"></i></a>
+                <a href="#"><i class="fa fa-3x fa-fw fa-twitter text-inverse"></i></a>
+                <a href="#"><i class="fa fa-3x fa-fw fa-facebook text-inverse"></i></a>
+                <a href="#"><i class="fa fa-3x fa-fw fa-github text-inverse"></i></a>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 hidden-xs text-right">
+                <a href="#"><i class="fa fa-3x fa-fw fa-instagram text-inverse color-gray"></i></a>
+                <a href="#"><i class="fa fa-3x fa-fw fa-twitter text-inverse color-gray"></i></a>
+                <a href="#"><i class="fa fa-3x fa-fw fa-facebook text-inverse color-gray"></i></a>
+                <a href="#"><i class="fa fa-3x fa-fw fa-github text-inverse color-gray"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <div class="modal fade" id="cart-modal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="modal-title">Cart</h4>
+          </div>
+          <div class="modal-body">
+            <ul class="list-group">
+              <li class="list-group-item">Cras justo odio
+                <button type="button" class="close" aria-hidden="true">×</button>
+              </li>
+              <li class="list-group-item">Dapibus ac facilisis in
+                <button type="button" class="close" aria-hidden="true">×</button>
+              </li>
+              <li class="list-group-item">Morbi leo risus
+                <button type="button" class="close" aria-hidden="true">×</button>
+              </li>
+              <li class="list-group-item">Porta ac consectetur ac
+                <button type="button" class="close" aria-hidden="true">×</button>
+              </li>
+              <li class="list-group-item">Vestibulum at eros
+                <button type="button" class="close" aria-hidden="true">×</button>
+              </li>
+            </ul>
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                <h3 class="panel-title">Total
+                  <span style="float: right; padding-right: 30px">5</span>
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-default" data-dismiss="modal">Close</a>
+            <a class="btn btn-primary">Purchase</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+
+</body></html>
