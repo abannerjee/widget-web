@@ -7,6 +7,7 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.2/lodash.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
     <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="public/css/widget.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="public/js/widget.js"></script>
@@ -134,7 +135,7 @@
           </div>
           <div class="modal-footer">
             <a class="btn btn-default" data-dismiss="modal">Close</a>
-            <a class="btn btn-primary">Purchase</a>
+            <button type="button" onclick="makePurchase()" class="btn btn-primary">Purchase</button>
           </div>
         </div>
       </div>

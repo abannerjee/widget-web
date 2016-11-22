@@ -6,6 +6,7 @@ var app = {
     widgets: api.concat('/widgets'),
     categories: api.concat('/categories'),
     subcategories: api.concat('/subcategories'),
+    orders: api.concat('/order'),
   },
   widgets: null,
   categories: null,
@@ -35,6 +36,12 @@ function initCart() {
       addToCart(id)
     })
   }
+}
+
+function updateCartTotal() {
+  $('#cart-total span').text(app.cart.length)
+  $('#cart-badge').text(app.cart.length)
+  updateCookie()
 }
 
 function addToCart(id) {
@@ -79,21 +86,54 @@ function addToCart(id) {
     $('#cart-list').append("".concat(entry, selects, removeBtn))
 
     // Update cart total
-    $('#cart-total span').text(app.cart.length)
-    $('#cart-badge').text(app.cart.length)
-    updateCookie()
+    updateCartTotal()
   }
 }
 
 function removeFromCart(id) {
   // Remove from cart modal and header
+  // and update total
   _.pull(app.cart, id)
   $('.list-group-item[w_id="' + id + '"]').detach()
+  updateCartTotal()
+}
 
-  // Update cart total
-  $('#cart-total span').text(app.cart.length)
-  $('#cart-badge').text(app.cart.length)
-  updateCookie()
+function makePurchase() {
+  if (app.cart.length) {
+    var data = []
+
+    // Get all widget and property ids for items
+    // in the cart and create an order.
+    $('.list-group-item').each(function(){
+      var w_id = $(this).attr('w_id')
+      var p_ids = []
+
+      $(this).find('select').each(function(){
+        p_ids.push($(this).val())
+      })
+
+      data.push({
+        w_id: w_id,
+        p_ids: p_ids
+      })
+    })
+
+    // POST order
+    $.post(app.api.orders, {'data': JSON.stringify(data)}, function(data, status){
+      // Clear out cart
+      app.cart = []
+      $('.list-group-item').detach()
+      $('#cart-modal').modal('hide')
+      updateCartTotal()
+
+      // Show order confirmation
+      bootbox.alert({
+        size: "small",
+        title: "Thank You!",
+        message: "Your order confirmation ID is " + data
+      })
+    })
+  }
 }
 
 
