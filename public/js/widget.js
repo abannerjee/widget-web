@@ -18,6 +18,11 @@ var app = {
  * Functions used to add widgets to the cart
  * and initialize the cart using cookies
  */
+function updateCookie() {
+  var cookie = "".concat(app.name, '=', JSON.stringify(app.cart))
+  document.cookie = cookie
+}
+
 function initCart() {
   // Check for existing cookie
   var exists = document.cookie.match(new RegExp(app.name + '=([^;]+)')); 
@@ -32,25 +37,46 @@ function initCart() {
   }
 }
 
-function updateCookie() {
-  var cookie = "".concat(app.name, '=', JSON.stringify(app.cart))
-  document.cookie = cookie
-}
-
-// Multiples of the same widget cannot be added to the cart
 function addToCart(id) {
-  if (_.intersection(app.cart, [id]) == 0) {
-    name = _.find(app.widgets, {w_id: id}).w_name
+  // Multiples of the same widget cannot be added to the cart
+  if (_.includes(app.cart, id) == 0) {
+    var widget = _.find(app.widgets, {w_id: id})
     app.cart.push(id)
 
-    // Add to cart modal
-    $('#cart-list').append('\
-      <li wid="' + id + '" class="list-group-item">' + name +
-        '<button type="button" class="close" aria-hidden="true" \
+    // Add a widget entry to the cart
+    var entry = '<li w_id="' + id + '" class="list-group-item">' + widget.w_name
+    var selects = ""
+
+    // Add selector for each widget property
+    var w_props = Object.keys(widget)
+    var allprops = _.uniq(_.map(app.subcategories, 'p_category'))
+    var iterprops = _.intersection(w_props, allprops)
+
+    // For each property in the widget, add a select option
+    _.each(iterprops, function(subname){
+      var select = '<select w_id="' + widget.w_id + '" style="margin-left:20px">'
+
+      _.each(widget[subname], function(name){
+        var query = {p_name: name, p_category: subname}
+        var sublookup = _.find(app.subcategories, query)
+
+        select += '\
+          <option value="' + sublookup.p_id + '">' +
+            sublookup.p_name + '</option>'
+      })
+
+      select += '</select>'
+      selects += select
+    })
+
+    // Add btn to remove cart
+    var removeBtn = '\
+        <button type="button" class="close" aria-hidden="true" \
           onclick=removeFromCart(' + id + ')>x\
         </button>\
       </li>\
-    ')
+    '
+    $('#cart-list').append("".concat(entry, selects, removeBtn))
 
     // Update cart total
     $('#cart-total span').text(app.cart.length)
@@ -62,7 +88,7 @@ function addToCart(id) {
 function removeFromCart(id) {
   // Remove from cart modal and header
   _.pull(app.cart, id)
-  $('.list-group-item[wid="' + id + '"]').detach()
+  $('.list-group-item[w_id="' + id + '"]').detach()
 
   // Update cart total
   $('#cart-total span').text(app.cart.length)
