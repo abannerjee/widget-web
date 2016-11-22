@@ -1,4 +1,3 @@
-//var api = 'http://34.192.230.162:3000'
 var api = 'http://localhost:3000'
 var app = {
   name: 'widgetfactory',
@@ -28,7 +27,8 @@ function updateCookie() {
 }
 
 function initCart() {
-  // Check for existing cookie
+  // Create cookie to store cart info if one does not exist,
+  // otherwise update the cookie with latest cart info.
   var exists = document.cookie.match(new RegExp(app.name + '=([^;]+)')); 
   if (!exists) {
     updateCookie()
@@ -74,7 +74,6 @@ function addToCart(id) {
           <option value="' + sublookup.p_id + '">' +
             sublookup.p_name + '</option>'
       })
-
       select += '</select>'
       selects += select
     })
@@ -171,7 +170,6 @@ function checkOrder(){
 
               orderAlert.message += '<br \><br \>'
             })
-
             bootbox.alert(orderAlert)
           }
           else {
@@ -375,7 +373,6 @@ function updateInventory() {
     ')
   })
 }
-
 
 // Create Widget - Initialize modal for creating widget
 function initCreateWidget() {
