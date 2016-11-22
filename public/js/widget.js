@@ -7,10 +7,12 @@ var app = {
     categories: api.concat('/categories'),
     subcategories: api.concat('/subcategories'),
     orders: api.concat('/order'),
+    inventory: api.concat('/inventory'),
   },
   widgets: null,
   categories: null,
   subcategories: null,
+  inventory: null,
   cart: [],
   cookie: null,
 }
@@ -51,7 +53,7 @@ function addToCart(id) {
     app.cart.push(id)
 
     // Add a widget entry to the cart
-    var entry = '<li w_id="' + id + '" class="list-group-item">' + widget.w_name
+    var entry = '<li w_id="' + id + '" class="cart list-group-item">' + widget.w_name
     var selects = ""
 
     // Add selector for each widget property
@@ -94,7 +96,7 @@ function removeFromCart(id) {
   // Remove from cart modal and header
   // and update total
   _.pull(app.cart, id)
-  $('.list-group-item[w_id="' + id + '"]').detach()
+  $('.cart.list-group-item[w_id="' + id + '"]').detach()
   updateCartTotal()
 }
 
@@ -104,7 +106,7 @@ function makePurchase() {
 
     // Get all widget and property ids for items
     // in the cart and create an order.
-    $('.list-group-item').each(function(){
+    $('.cart.list-group-item').each(function(){
       var w_id = $(this).attr('w_id')
       var p_ids = []
 
@@ -122,7 +124,7 @@ function makePurchase() {
     $.post(app.api.orders, {'data': JSON.stringify(data)}, function(data, status){
       // Clear out cart
       app.cart = []
-      $('.list-group-item').detach()
+      $('.cart.list-group-item').detach()
       $('#cart-modal').modal('hide')
       updateCartTotal()
 
@@ -221,12 +223,43 @@ function getWidgetHTML(widget) {
   return ret + '</ul></div>'
 }
 
+
+/*
+ * Functions used to check widgets inventory
+ * and edit inventory values
+ */
+function editInventory(w_id) {
+  bootbox.prompt({
+    title: "Enter new quantity",
+    inputType: 'number',
+    callback: function(result){
+      var data = {
+        w_id: JSON.stringify(w_id),
+        stock: JSON.stringify(result)
+      }
+      $.post(app.api.inventory, data, function(data, status){
+        if (status == 'success') {
+          bootbox.alert({message: 'Successfully updated stock', size: 'small'})
+          $.getJSON(app.api.inventory, {}, function(data, textStatus, jqXHR){
+            app.inventory = data || []
+            updateInventory()
+          })
+        }
+        else {
+          bootbox.alert({message: 'Error updating stock', size: 'small'})
+        }
+      })
+    }
+  })
+}
+
+
 // Home - Featured Widgets
 function updateHome() {
   var count = 0;
   $('.widget-holder').each(function(){
-    $(this).empty()
     var widget = app.widgets[count]
+    $(this).empty()
     $(this).append(getWidgetHTML(widget))
     count += 1
   })
@@ -240,6 +273,23 @@ function updateWidgets() {
     $('#widget-list').append('\
       <div class="col-lg-3 col-md-4">' + getWidgetHTML(widget) + '</div>'
     )
+  })
+}
+
+// Inventory - Stock of all widgets
+function updateInventory() {
+  $('#inventory-list').empty()
+
+  app.inventory.forEach(function(inv){
+    var widget = _.find(app.widgets, {w_id: inv.i_widget_id})
+    $('#inventory-list').append('\
+      <li class="inventory list-group-item">' + widget.w_name +
+        '<span style="float:right">' + inv.i_stock +
+          '<a class="btn-update-inv" href="#" style="padding-left:10px" \
+            onclick=editInventory(' + inv.i_widget_id + ')>Update</a>\
+        </span>\
+      </li>\
+    ')
   })
 }
 
@@ -258,6 +308,9 @@ function getData() {
     }),
     $.getJSON(app.api.subcategories, {}, function(data, textStatus, jqXHR){
       app.subcategories = data || []
+    }),
+    $.getJSON(app.api.inventory, {}, function(data, textStatus, jqXHR){
+      app.inventory = data || []
     })
   ).then(function(){
     update()
@@ -269,6 +322,7 @@ function update() {
   updateFilterSidebar()
   updateHome()
   updateWidgets()
+  updateInventory()
 }
 
 $(document).ready(function(){

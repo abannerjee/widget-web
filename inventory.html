@@ -1,0 +1,128 @@
+<html><head>
+    <meta name="keywords" content="widget">
+    <meta name="description" content="Online store for widgets">
+    <title>Widget Factory</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.2/lodash.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="public/css/widget.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="public/js/widget.js"></script>
+  </head><body>
+    <div class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-ex-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/"><span>Widget Factory</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-ex-collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a href="widgets.html">Widgets</a>
+            </li>
+            <li>
+              <a href="inventory.html">Inventory</a>
+            </li>
+            <li>
+              <a href="order.html">Check Order</a>
+            </li>
+            <li>
+              <a href="admin.html">Admin Tools</a>
+            </li>
+            <li>
+              <a href="#" data-toggle="modal" data-target="#cart-modal">
+        <i class="fa fa-lg fa-fw ars fa-shopping-cart"></i>
+        <span id="cart-badge" class="badge">0</span>
+        </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="section section-primary">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12 padding hero text-center">
+            <h1 class="hero-header">Inventory</h1>
+            <p class="hero-subtext">Widget Stock</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <ul id="inventory-list" class="list-group"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="section section-primary">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-6">
+            <h1>Widget Factory</h1>
+            <p class="color-gray">Lorem ipsum dolor sit amet, consectetur adipisici elit,
+              <br>sed eiusmod tempor incidunt ut labore et dolore magna aliqua.
+              <br>Ut enim ad minim veniam, quis nostrud</p>
+          </div>
+          <div class="col-sm-6">
+            <p class="text-info text-right">
+              <br>
+              <br>
+            </p>
+            <div class="row">
+              <div class="col-md-12 hidden-lg hidden-md hidden-sm text-left">
+                <a href="#"><i class="fa fa-3x fa-fw fa-instagram text-inverse"></i></a>
+                <a href="#"><i class="fa fa-3x fa-fw fa-twitter text-inverse"></i></a>
+                <a href="#"><i class="fa fa-3x fa-fw fa-facebook text-inverse"></i></a>
+                <a href="#"><i class="fa fa-3x fa-fw fa-github text-inverse"></i></a>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 hidden-xs text-right">
+                <a href="#"><i class="fa fa-3x fa-fw fa-instagram text-inverse color-gray"></i></a>
+                <a href="#"><i class="fa fa-3x fa-fw fa-twitter text-inverse color-gray"></i></a>
+                <a href="#"><i class="fa fa-3x fa-fw fa-facebook text-inverse color-gray"></i></a>
+                <a href="#"><i class="fa fa-3x fa-fw fa-github text-inverse color-gray"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <div class="modal fade" id="cart-modal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="modal-title">Cart</h4>
+          </div>
+          <div class="modal-body">
+            <ul id="cart-list" class="list-group"></ul>
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                <h3 id="cart-total" class="panel-title">Total
+                  <span style="float: right; padding-right: 30px"></span>
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-default" data-dismiss="modal">Close</a>
+            <button type="button" onclick="makePurchase()" class="btn btn-primary">Purchase</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</body></html>
