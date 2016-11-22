@@ -35,7 +35,7 @@
               <a href="#" onclick=checkOrder()>Check Order</a>
             </li>
             <li>
-              <a href="admin.html">Admin Tools</a>
+              <a href="#" data-toggle="modal" data-target="#add-widget-modal">Create Widget</a>
             </li>
             <li>
               <a href="#" data-toggle="modal" data-target="#cart-modal">
@@ -100,26 +100,45 @@
         </div>
       </div>
     </footer>
-    <div class="modal fade" id="cart-modal">
+
+    <div class="modal fade" id="add-widget-modal">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h4 class="modal-title">Cart</h4>
+            <h4 class="modal-title">Create New Widget</h4>
           </div>
           <div class="modal-body">
-            <ul id="cart-list" class="list-group"></ul>
-            <div class="panel panel-primary">
-              <div class="panel-heading">
-                <h3 id="cart-total" class="panel-title">Total
-                  <span style="float: right; padding-right: 30px"></span>
-                </h3>
-              </div>
+            <h4>Select Name</h4>
+            <input id="widget-select-name" type="text">
+
+            <h4>Select Type</h4>
+            <div id="widget-select-type"></div>
+
+            <h4>Select Properties</h4>
+            <div id="widget-select-props">
             </div>
           </div>
           <div class="modal-footer">
             <a class="btn btn-default" data-dismiss="modal">Close</a>
-            <button type="button" onclick="makePurchase()" class="btn btn-primary">Purchase</button>
+            <button type="button" onclick="submitNewWidget()" class="btn btn-primary">Create</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="add-widget-modal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="modal-title">Create New Widget</h4>
+          </div>
+          <div class="modal-body">
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-default" data-dismiss="modal">Close</a>
+            <button type="button" onclick="submitNewWidget()" class="btn btn-primary">Create</button>
           </div>
         </div>
       </div>

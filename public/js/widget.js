@@ -3,6 +3,7 @@ var api = 'http://localhost:3000'
 var app = {
   name: 'widgetfactory',
   api: {
+    widget: api.concat('/widget'),
     widgets: api.concat('/widgets'),
     categories: api.concat('/categories'),
     subcategories: api.concat('/subcategories'),
@@ -269,8 +270,7 @@ function getWidgetHTML(widget) {
 
 
 /*
- * Functions used to check widgets inventory
- * and edit inventory values
+ * Function used to check widgets inventory
  */
 function editInventory(w_id) {
   bootbox.prompt({
@@ -297,6 +297,43 @@ function editInventory(w_id) {
       }
     }
   })
+}
+
+/*
+ * Function used to add a new widget
+ */
+function submitNewWidget() {
+  // Get widget values
+  var name = $('#widget-select-name').val()
+  var type = $('#widget-select-type input:radio:checked').attr('id')
+  var props = $('#widget-select-props input:checkbox:checked')
+
+  // Values must be selected for all fields
+  if (name.length && type.length && props.length) {
+    var data = {
+      name: name,
+      type: type,
+      props: []
+    }
+
+    // Get all prop ids
+    props.each(function(){
+      data.props.push($(this).attr('id'))
+    })
+
+    // POST new widget
+    $.post(app.api.widget, {'data': JSON.stringify(data)}, function(data, status){
+      if (status == 'success') {
+        bootbox.alert({size: 'small', message: 'New widget created'})
+        $('#add-widget-modal').modal('hide')
+        update()
+      }
+      else {
+        bootbox.alert({size: 'small', message: 'Error creating widget'})
+      }
+    })
+
+  }
 }
 
 
@@ -340,6 +377,33 @@ function updateInventory() {
 }
 
 
+// Create Widget - Initialize modal for creating widget
+function initCreateWidget() {
+  // Clear out existing layout
+  $('#widget-select-name').val('')
+  $('#widget-select-type').empty()
+  $('#widget-select-props').empty()
+
+  // Add all types
+  app.categories.forEach(function(cat){
+    $('#widget-select-type').append('\
+      <label class="radio-inline">\
+        <input type="radio" id="' + cat.p_id + '">' + cat.p_name +
+      '</label>\
+    ')
+  })
+
+  // Add all properties
+  app.subcategories.forEach(function(sub){
+    $('#widget-select-props').append('\
+      <label class="checkbox-inline">\
+        <input type="checkbox" id="' + sub.p_id +'">' + sub.p_name +
+      '</label>\
+    ')
+  })
+}
+
+
 /*
  * Main functions to get all necessary widget data
  * and update the widget pages
@@ -369,6 +433,7 @@ function update() {
   updateHome()
   updateWidgets()
   updateInventory()
+  initCreateWidget()
 }
 
 $(document).ready(function(){
