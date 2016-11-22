@@ -138,6 +138,50 @@ function makePurchase() {
   }
 }
 
+/*
+ * Funcions to check order given an order ID
+ */
+function checkOrder(){
+  bootbox.prompt({
+    title: "Enter your order ID",
+    inputType: 'number',
+    callback: function(result){
+      if (result) {
+        $.getJSON(app.api.orders.concat('/', result), {}, function(data, textStatus, jqXHR){
+          if (textStatus == 'success') {
+            var orderAlert = {
+              title: 'Order ' + result,
+              message: ''
+            }
+
+            data.forEach(function(order){
+              var widget = _.find(app.widgets, {w_id: order.o_widget_id})
+
+              orderAlert.message += '\
+                Date: ' + order.to_char + '<br />\
+                Widget: ' + widget.w_name + '<br />\
+                Properties: \
+              '
+
+              order.o_configuration.forEach(function(id){
+                var prop = _.find(app.subcategories, {p_id: id})
+                orderAlert.message += prop.p_name + ', '
+              })
+
+              orderAlert.message += '<br \><br \>'
+            })
+
+            bootbox.alert(orderAlert)
+          }
+          else {
+            bootbox.alert({message: 'Cannot retrieve your order', size: 'small'})
+          }
+        })
+      }
+    }
+  })
+}
+
 
 /*
  * Functions used to filter/retrieve widget info
@@ -233,22 +277,24 @@ function editInventory(w_id) {
     title: "Enter new quantity",
     inputType: 'number',
     callback: function(result){
-      var data = {
-        w_id: JSON.stringify(w_id),
-        stock: JSON.stringify(result)
+      if (result) {
+        var data = {
+          w_id: JSON.stringify(w_id),
+          stock: JSON.stringify(result)
+        }
+        $.post(app.api.inventory, data, function(data, status){
+          if (status == 'success') {
+            bootbox.alert({message: 'Successfully updated stock', size: 'small'})
+            $.getJSON(app.api.inventory, {}, function(data, textStatus, jqXHR){
+              app.inventory = data || []
+              updateInventory()
+            })
+          }
+          else {
+            bootbox.alert({message: 'Error updating stock', size: 'small'})
+          }
+        })
       }
-      $.post(app.api.inventory, data, function(data, status){
-        if (status == 'success') {
-          bootbox.alert({message: 'Successfully updated stock', size: 'small'})
-          $.getJSON(app.api.inventory, {}, function(data, textStatus, jqXHR){
-            app.inventory = data || []
-            updateInventory()
-          })
-        }
-        else {
-          bootbox.alert({message: 'Error updating stock', size: 'small'})
-        }
-      })
     }
   })
 }
